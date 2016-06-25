@@ -10,8 +10,7 @@
     "github": "^1.4.0",
     "inquirer": "^1.0.3",
     "open": "0.0.5",
-    "parse-git-config": "^0.4.2",
-    "superagent": "^2.0.0"
+    "parse-git-config": "^0.4.2"
   },
   "devDependencies": {
     "eslint": "^2.13.1"

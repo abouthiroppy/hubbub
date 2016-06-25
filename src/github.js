@@ -6,7 +6,7 @@ const findConfig = require('find-config');
 const GitHubApi  = require('github');
 
 let github;
-const info = {};
+let info;
 
 module.exports.init = () => {
   return new Promise((resolve, reject) => {
@@ -19,35 +19,55 @@ module.exports.init = () => {
     }
 
     parse({path: path.resolve(gitPath, 'config')}, (err, config) => {
-      const [user, repo] = config['remote "origin"'].url.split(':')[1].split('/');
-      info.user = user;
-      info.repo = repo.split('.git')[0];
+      const urlArr = config['remote "origin"'].url.split(':');
+      const path = urlArr[1];
+      const host =
+        urlArr[0].split('@')[1] === 'github.com' ?
+        'api.github.com' :
+        urlArr[0].split('@')[1];
 
-      info.remoteUrl =
-        `https://github.com/${config['remote "origin"'].url.split('git@github.com:')[1]}`;
+      const user = path.split('/')[0];
+      let repo = path.split('/')[1];
+      let protocol = 'https'; // [TODO] check http or https
 
-      github = new GitHubApi({
-        debug: false,
-        protocol: 'https',
-
-        // host: 'github.my-GHE-enabled-company.com', // should be api.github.com for GitHub
-        host: 'api.github.com',
-
-        // pathPrefix: '/api/v3', // for some GHEs; none for GitHub
+      repo = repo.split('.git')[0];
+      info = {
+        user,
+        host,
+        repo,
+        protocol,
+        debug  : false,
         timeout: 5000,
         version: '3.0.0',
         headers: {
-          'user-agent': 'My-Cool-GitHub-App' // GitHub is happy with a unique user agent
+          'user-agent': 'Huben'
         },
-        followRedirects: false // default: true; there's currently an issue with non-get redirects, so allow ability to disable follow-redirects
-      });
+        remoteUrl      : `https://github.com/${user}/${repo}`,
+        followRedirects: false
+      };
 
+      // for GHE
+      if (info.host !== 'api.github.com') {
+        protocol = 'http'; // in my office...
+
+        Object.assign(info, {
+          protocol,
+          remoteUrl : `${protocol}://${host}/${user}/${repo}`,
+          pathPrefix: '/api/v3'
+        });
+      }
+
+      github = new GitHubApi(info);
+
+      // github.authenticate({
+      //   type: 'basic',
+      //   username: '',
+      //   password: ''
+      // });
       resolve(info);
     });
   });
 };
-
-// [TODO] create remote url
 
 module.exports.updateInfo = (obj) => {
   return Object.assign(info, obj);
@@ -71,9 +91,9 @@ module.exports.fetchPullRequests = (user = info.user, repo = info.repo) => {
       else {
         res.forEach((item) => {
           items.push({
-            htmlUrl: item.html_url,
-            title: item.title,
-            state: item.state
+            title  : item.title,
+            state  : item.state,
+            htmlUrl: item.html_url
           });
         });
         resolve(['Pull-Requests', items]);
@@ -86,11 +106,14 @@ module.exports.fetchIssues = (user = info.user, repo = info.repo) => {
   return new Promise((resolve, reject) => {
     const items = [];
 
-    // [TODO] fix
-    // github-api requests authentication to get all issues...
-    const request = require('superagent');
-    request(`api.github.com/repos/${user}/${repo}/issues`).end((err, res) => {
-      res.body.forEach((item) => {
+    github.issues.getForRepo({
+      user,
+      repo
+    }, (err, res) => {
+      if (err) {
+        reject(err);
+      }
+      res.forEach((item) => {
         items.push({
           title  : item.title,
           state  : item.state,
