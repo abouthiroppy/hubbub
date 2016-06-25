@@ -64,6 +64,6 @@ function createList(items) {
       paginated: true
     }).then((res) => open(res.link))
       .then(loop)
-      .catch((err) => console.log(err))
-  }
+      .catch((err) => console.log(err));
+  };
 }

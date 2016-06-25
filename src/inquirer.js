@@ -8,7 +8,7 @@ module.exports.selectRepo = (defaultUser, defaultRepo) => {
       type: 'input',
       name: 'user',
       message: 'Input username',
-      default: function () {
+      default: () => {
         return defaultUser;
       }
     },
@@ -16,7 +16,7 @@ module.exports.selectRepo = (defaultUser, defaultRepo) => {
       type: 'input',
       name: 'repo',
       message: 'Input repository name',
-      default: function () {
+      default: () => {
         return defaultRepo;
       }
     }

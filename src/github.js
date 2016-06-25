@@ -29,15 +29,17 @@ module.exports.init = () => {
       github = new GitHubApi({
         debug: false,
         protocol: 'https',
+
         // host: 'github.my-GHE-enabled-company.com', // should be api.github.com for GitHub
         host: 'api.github.com',
+
         // pathPrefix: '/api/v3', // for some GHEs; none for GitHub
         timeout: 5000,
         version: '3.0.0',
         headers: {
           'user-agent': 'My-Cool-GitHub-App' // GitHub is happy with a unique user agent
         },
-        followRedirects: false, // default: true; there's currently an issue with non-get redirects, so allow ability to disable follow-redirects
+        followRedirects: false // default: true; there's currently an issue with non-get redirects, so allow ability to disable follow-redirects
       });
 
       resolve(info);
@@ -60,8 +62,8 @@ module.exports.fetchPullRequests = (user = info.user, repo = info.repo) => {
     const items = [];
 
     github.pullRequests.getAll({
-      user: user,
-      repo: repo
+      user,
+      repo
     }, (err, res) => {
       if (err) {
         reject(err);
@@ -72,7 +74,7 @@ module.exports.fetchPullRequests = (user = info.user, repo = info.repo) => {
             htmlUrl: item.html_url,
             title: item.title,
             state: item.state
-          })
+          });
         });
         resolve(['Pull-Requests', items]);
       }
@@ -93,9 +95,9 @@ module.exports.fetchIssues = (user = info.user, repo = info.repo) => {
           title  : item.title,
           state  : item.state,
           htmlUrl: item.html_url
-        })
+        });
       });
       resolve(['Issues', items]);
     });
   });
-}
+};
