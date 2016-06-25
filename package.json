@@ -1,0 +1,35 @@
+{
+  "name": "huben",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "cli-spinner": "^0.2.5",
+    "find-config": "^1.0.0",
+    "github": "^1.4.0",
+    "glob": "^7.0.5",
+    "inquirer": "^1.0.3",
+    "look-up": "^0.8.3",
+    "open": "0.0.5",
+    "parse-git-config": "^0.4.2",
+    "superagent": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abouthiroppy/huben.git"
+  },
+  "author": "abouthiroppy <git@about-hiroppy.com> (http://about-hiroppy.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abouthiroppy/huben/issues"
+  },
+  "bin": {
+    "huben": "src/index.js"
+  },
+  "homepage": "https://github.com/abouthiroppy/huben#readme"
+}
