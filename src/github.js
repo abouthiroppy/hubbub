@@ -2,8 +2,8 @@
 
 const path       = require('path');
 const parse      = require('parse-git-config');
-const findConfig = require('find-config');
 const GitHubApi  = require('github');
+const findConfig = require('find-config');
 
 let github;
 let info;

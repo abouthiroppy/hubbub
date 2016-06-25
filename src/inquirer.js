@@ -40,5 +40,6 @@ module.exports.base = () => {
 };
 
 module.exports.linksList = (items) => {
+  items.choices.unshift(new inquirer.Separator());
   return inquirer.prompt(items);
 };
