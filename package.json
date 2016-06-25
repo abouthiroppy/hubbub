@@ -1,6 +1,6 @@
 {
   "name": "huben",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Huben is a supporter to operate Github PR and issue in your terminal.",
   "main": "src/index.js",
   "dependencies": {
@@ -13,10 +13,11 @@
     "parse-git-config": "^0.4.2"
   },
   "devDependencies": {
+    "ava": "^0.15.2",
     "eslint": "^2.13.1"
   },
   "scripts": {
-    "test": "echo [TODO]",
+    "test": "ava",
     "lint": "eslint ."
   },
   "repository": {
@@ -31,5 +32,16 @@
   "bin": {
     "huben": "src/index.js"
   },
-  "homepage": "https://github.com/abouthiroppy/huben#readme"
+  "homepage": "https://github.com/abouthiroppy/huben#readme",
+  "keywords": [
+    "github",
+    "issue",
+    "pull-request",
+    "cli"
+  ],
+  "files": [
+    "README.md",
+    "src",
+    "package.json"
+  ]
 }
